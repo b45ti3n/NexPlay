@@ -8,6 +8,7 @@ permissions:
 
 jobs:
   mirror:
+    if: github.repository == 'b45ti3n/NexPlay'
     runs-on: ubuntu-latest
 
     steps:
