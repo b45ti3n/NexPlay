@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   ci:
-    if: github.event.deleted != true
+    if: github.event.deleted != true && github.repository == 'b45ti3n/NexPlay'
     runs-on: ubuntu-latest
 
     steps:
