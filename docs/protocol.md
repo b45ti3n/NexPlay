@@ -7,10 +7,10 @@
 
 Two channels exist:
 
-| Channel | Between | Technology |
-|---|---|---|
-| **Platform channel** | console ↔ server ↔ phones | Socket.IO, WebSocket transport only |
-| **Game channel** | console page ↔ game iframe | `postMessage` through the SDK (section 14) |
+| Channel              | Between                    | Technology                                 |
+| -------------------- | -------------------------- | ------------------------------------------ |
+| **Platform channel** | console ↔ server ↔ phones  | Socket.IO, WebSocket transport only        |
+| **Game channel**     | console page ↔ game iframe | `postMessage` through the SDK (section 14) |
 
 Conventions for the platform channel:
 
@@ -23,19 +23,19 @@ Conventions for the platform channel:
 
 ## 2. Roles and identifiers
 
-| Role | Who | Notes |
-|---|---|---|
-| `console` | the screen (TV or computer browser) | Exactly one per room. Runs the game iframe. |
-| `pad` | a player's phone | Up to 4 per room (8 is an optional stretch goal). |
-| host | the **first player** who joined | Can choose and start games, kick players. Can change later (optional feature). |
+| Role      | Who                                 | Notes                                                                          |
+| --------- | ----------------------------------- | ------------------------------------------------------------------------------ |
+| `console` | the screen (TV or computer browser) | Exactly one per room. Runs the game iframe.                                    |
+| `pad`     | a player's phone                    | Up to 4 per room (8 is an optional stretch goal).                              |
+| host      | the **first player** who joined     | Can choose and start games, kick players. Can change later (optional feature). |
 
-| Identifier | Format | Visibility |
-|---|---|---|
-| `code` (room code) | 5 chars from `ABCDEFGHJKMNPQRSTUVWXYZ23456789` (no I, L, O, 0, 1), generated with `crypto.randomInt`; input is case-insensitive | public (shown on screen) |
-| `playerId` | opaque short string, e.g. `p_7k2f` | public (visible to games) |
-| `slot` | integer 0 to 3 | public (player number, stable during the room) |
-| `token` | 128-bit random string | **secret**, known only to the phone and the server. Never sent to other clients or to games. |
-| `consoleToken` | 128-bit random string | **secret**, known only to the console and the server |
+| Identifier         | Format                                                                                                                          | Visibility                                                                                   |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `code` (room code) | 5 chars from `ABCDEFGHJKMNPQRSTUVWXYZ23456789` (no I, L, O, 0, 1), generated with `crypto.randomInt`; input is case-insensitive | public (shown on screen)                                                                     |
+| `playerId`         | opaque short string, e.g. `p_7k2f`                                                                                              | public (visible to games)                                                                    |
+| `slot`             | integer 0 to 3                                                                                                                  | public (player number, stable during the room)                                               |
+| `token`            | 128-bit random string                                                                                                           | **secret**, known only to the phone and the server. Never sent to other clients or to games. |
+| `consoleToken`     | 128-bit random string                                                                                                           | **secret**, known only to the console and the server                                         |
 
 ## 3. Connection and handshake
 
@@ -43,8 +43,8 @@ Clients connect with:
 
 ```ts
 io(SERVER_URL, {
-  transports: ['websocket'],
-  auth: { v: 1, role: 'console' | 'pad' },
+  transports: ["websocket"],
+  auth: { v: 1, role: "console" | "pad" },
 });
 ```
 
@@ -69,12 +69,12 @@ io(SERVER_URL, {
  any state ──► closed (console gone too long, idle timeout, room:close)
 ```
 
-| Phase | Meaning |
-|---|---|
-| `lobby` | players join, host selects a game |
-| `playing` | a game runs in the iframe |
-| `paused` | the game is paused (host command) |
-| `ended` | the game ended, results are available; replay or back to lobby |
+| Phase     | Meaning                                                        |
+| --------- | -------------------------------------------------------------- |
+| `lobby`   | players join, host selects a game                              |
+| `playing` | a game runs in the iframe                                      |
+| `paused`  | the game is paused (host command)                              |
+| `ended`   | the game ended, results are available; replay or back to lobby |
 
 Closing rules (initial values, tunable by load tests):
 
@@ -86,35 +86,35 @@ Closing rules (initial values, tunable by load tests):
 
 ### Client → server
 
-| Event | From | Ack | Purpose |
-|---|---|---|---|
-| `room:create` | console | yes | create a room, get `code` and `consoleToken` |
-| `room:resume` | console | yes | reclaim the room after a disconnection |
-| `room:close` | console | yes | close the room |
-| `room:join` | pad | yes | join a room, or reclaim a seat with `token` |
-| `room:leave` | pad | yes | leave voluntarily |
-| `player:update` | pad | yes | change nickname, avatar or accessibility preferences |
-| `host:command` | pad (host) or console | yes | select game, start, kick, pause, resume, replay, back to lobby |
-| `pad:layout` | console | yes | set the controller layout for all or some players |
-| `private:send` | console | no | private message to one player |
-| `haptic:send` | console | no | vibration request for one player |
-| `game:end` | console | yes | the game ended, with scores |
-| `game:crashed` | console | no | the watchdog killed the game |
-| `input` | pad | no | a player action |
-| `rtt:ping` | pad or console | yes | latency measurement |
+| Event           | From                  | Ack | Purpose                                                        |
+| --------------- | --------------------- | --- | -------------------------------------------------------------- |
+| `room:create`   | console               | yes | create a room, get `code` and `consoleToken`                   |
+| `room:resume`   | console               | yes | reclaim the room after a disconnection                         |
+| `room:close`    | console               | yes | close the room                                                 |
+| `room:join`     | pad                   | yes | join a room, or reclaim a seat with `token`                    |
+| `room:leave`    | pad                   | yes | leave voluntarily                                              |
+| `player:update` | pad                   | yes | change nickname, avatar or accessibility preferences           |
+| `host:command`  | pad (host) or console | yes | select game, start, kick, pause, resume, replay, back to lobby |
+| `pad:layout`    | console               | yes | set the controller layout for all or some players              |
+| `private:send`  | console               | no  | private message to one player                                  |
+| `haptic:send`   | console               | no  | vibration request for one player                               |
+| `game:end`      | console               | yes | the game ended, with scores                                    |
+| `game:crashed`  | console               | no  | the watchdog killed the game                                   |
+| `input`         | pad                   | no  | a player action                                                |
+| `rtt:ping`      | pad or console        | yes | latency measurement                                            |
 
 ### Server → client
 
-| Event | To | Purpose |
-|---|---|---|
-| `room:state` | console and pads | full snapshot of the room (sent on every change) |
-| `room:closed` | all | the room is gone |
-| `pad:layout` | pad | the layout to display |
-| `private:message` | one pad | private text |
-| `haptic` | one pad | vibration request |
-| `input:event` | console | validated player action |
-| `kicked` | one pad | the host removed this player |
-| `error` | any | asynchronous error (rate limit, etc.) |
+| Event             | To               | Purpose                                          |
+| ----------------- | ---------------- | ------------------------------------------------ |
+| `room:state`      | console and pads | full snapshot of the room (sent on every change) |
+| `room:closed`     | all              | the room is gone                                 |
+| `pad:layout`      | pad              | the layout to display                            |
+| `private:message` | one pad          | private text                                     |
+| `haptic`          | one pad          | vibration request                                |
+| `input:event`     | console          | validated player action                          |
+| `kicked`          | one pad          | the host removed this player                     |
+| `error`           | any              | asynchronous error (rate limit, etc.)            |
 
 ## 6. Room events: payloads
 
@@ -151,15 +151,15 @@ Closing rules (initial values, tunable by load tests):
 
 ```ts
 type RoomState = {
-  rev: number;                         // increases on every change; clients ignore older snapshots
+  rev: number; // increases on every change; clients ignore older snapshots
   code: string;
-  phase: 'lobby' | 'playing' | 'paused' | 'ended';
+  phase: "lobby" | "playing" | "paused" | "ended";
   hostId: PlayerId;
-  selectedGameId: string | null;       // chosen in lobby
+  selectedGameId: string | null; // chosen in lobby
   game: { id: string; startedAt: number } | null;
   players: Player[];
-  results: GameResult[] | null;        // set in 'ended'
-  notice: 'GAME_CRASHED' | null;       // shown once on the console
+  results: GameResult[] | null; // set in 'ended'
+  notice: "GAME_CRASHED" | null; // shown once on the console
 };
 
 type Player = {
@@ -167,7 +167,7 @@ type Player = {
   slot: 0 | 1 | 2 | 3;
   nickname: string;
   avatarId: string;
-  connected: boolean;                  // false during the reconnection grace period
+  connected: boolean; // false during the reconnection grace period
   isHost: boolean;
   a11y: A11yPrefs;
 };
@@ -182,12 +182,13 @@ We send **full snapshots** instead of many small events: with at most 4 to 8 pla
 ```ts
 // host:command
 type HostCommand =
-  | { cmd: 'selectGame'; gameId: string }
-  | { cmd: 'start' }                    // starts the selected game
-  | { cmd: 'kick'; playerId: PlayerId }
-  | { cmd: 'pause' } | { cmd: 'resume' }
-  | { cmd: 'replay' }                   // same game, same players, from 'ended'
-  | { cmd: 'backToLobby' };             // choose another game
+  | { cmd: "selectGame"; gameId: string }
+  | { cmd: "start" } // starts the selected game
+  | { cmd: "kick"; playerId: PlayerId }
+  | { cmd: "pause" }
+  | { cmd: "resume" }
+  | { cmd: "replay" } // same game, same players, from 'ended'
+  | { cmd: "backToLobby" }; // choose another game
 ```
 
 Rules enforced by the server:
@@ -236,16 +237,32 @@ Rules:
 ```ts
 // input  (pad → server)
 type Input = { lr: number; seq: number; t: number } & (
-  | { type: 'button';   c: string; state: 'down' | 'up' }
-  | { type: 'dpad';     c: string; dir: 'none' | 'up' | 'down' | 'left' | 'right'
-                                      | 'up-left' | 'up-right' | 'down-left' | 'down-right' }
-  | { type: 'joystick'; c: string; x: number; y: number }                  // each -1 to 1
-  | { type: 'text';     c: string; value: string }                          // sent on submit
-  | { type: 'choice';   c: string; selected: string[] }                     // sent on submit
+  | { type: "button"; c: string; state: "down" | "up" }
+  | {
+      type: "dpad";
+      c: string;
+      dir:
+        | "none"
+        | "up"
+        | "down"
+        | "left"
+        | "right"
+        | "up-left"
+        | "up-right"
+        | "down-left"
+        | "down-right";
+    }
+  | { type: "joystick"; c: string; x: number; y: number } // each -1 to 1
+  | { type: "text"; c: string; value: string } // sent on submit
+  | { type: "choice"; c: string; selected: string[] } // sent on submit
 );
 
 // input:event  (server → console)
-type InputEvent = Input & { playerId: PlayerId; st: number; filtered?: boolean };
+type InputEvent = Input & {
+  playerId: PlayerId;
+  st: number;
+  filtered?: boolean;
+};
 ```
 
 - `lr` is the `layoutRev` the phone was displaying. Inputs with an old `lr` (sent just before a layout switch) are dropped.
@@ -292,11 +309,13 @@ Sent by the phone at `room:join` and changed with `player:update`. They are part
 
 ```ts
 // rtt:ping  (pad or console → server), ack data: { st: number }
-{ t: number }
+{
+  t: number;
+}
 ```
 
 - Each client pings every 2 s and keeps the last RTT (round trip time = `Date.now() - t` when the ack arrives). The server also tracks each player's RTT in memory.
-- Pad and console clocks differ, so they are never subtracted. In **developer mode**, the end-to-end input latency is *estimated*:
+- Pad and console clocks differ, so they are never subtracted. In **developer mode**, the end-to-end input latency is _estimated_:
   `RTT_pad / 2 + RTT_console / 2 + frame time of the game`.
 - The developer overlay shows RTT per player, the estimate, and a rolling average. The target is below 100 ms on a local network.
 - For a measured value (not an estimate) in tests, the load-test bots and the Playwright end-to-end test run in the same machine, where clocks are shared.
@@ -318,18 +337,18 @@ A new connection using a `token` that is already connected replaces the old sock
 
 Initial values; they will be tuned with the load tests and recorded in the technical documentation.
 
-| Limit | Value |
-|---|---|
-| Players per room | 4 (8 as a stretch goal) |
-| Max payload per message | 64 KB global, per-schema limits below |
-| Layout | 12 components, 8 KB |
-| Text input | `maxLength` at most 60 |
-| Private message | 500 chars |
-| Nickname | 1 to 16 chars |
-| Per-socket messages | token bucket: 60 msg/s sustained, burst 100 |
-| `text` / `choice` submissions | 2 per second per player |
-| Join attempts | 10 per minute per IP |
-| Room creations | 5 per minute per IP |
+| Limit                         | Value                                       |
+| ----------------------------- | ------------------------------------------- |
+| Players per room              | 4 (8 as a stretch goal)                     |
+| Max payload per message       | 64 KB global, per-schema limits below       |
+| Layout                        | 12 components, 8 KB                         |
+| Text input                    | `maxLength` at most 60                      |
+| Private message               | 500 chars                                   |
+| Nickname                      | 1 to 16 chars                               |
+| Per-socket messages           | token bucket: 60 msg/s sustained, burst 100 |
+| `text` / `choice` submissions | 2 per second per player                     |
+| Join attempts                 | 10 per minute per IP                        |
+| Room creations                | 5 per minute per IP                         |
 
 When a limit is exceeded the message is dropped. Repeated violations (e.g. 20 within 10 s) get an `error` with `RATE_LIMITED` and the socket is disconnected.
 
@@ -341,21 +360,21 @@ Ack failure shape and async `error` event share one format:
 { code: ErrorCode, message: string, details?: unknown }
 ```
 
-| Code | When |
-|---|---|
-| `INVALID_MESSAGE` | payload does not match the schema |
-| `VERSION_MISMATCH` | protocol version not supported |
-| `ROOM_NOT_FOUND` | unknown or closed room code |
-| `ROOM_FULL` | no free slot |
-| `NICKNAME_INVALID` | empty, too long, forbidden characters or filtered word |
-| `NICKNAME_TAKEN` | already used in this room |
-| `UNKNOWN_TOKEN` | token does not match any seat |
-| `NOT_HOST` | host command from someone else |
-| `NOT_ALLOWED` | action not allowed in this phase or by the active layout |
-| `GAME_NOT_FOUND` | game not in the catalog |
-| `NOT_ENOUGH_PLAYERS` / `TOO_MANY_PLAYERS` | manifest player limits not respected |
-| `RATE_LIMITED` | too many messages |
-| `REPLACED` | a newer connection took this seat |
+| Code                                      | When                                                     |
+| ----------------------------------------- | -------------------------------------------------------- |
+| `INVALID_MESSAGE`                         | payload does not match the schema                        |
+| `VERSION_MISMATCH`                        | protocol version not supported                           |
+| `ROOM_NOT_FOUND`                          | unknown or closed room code                              |
+| `ROOM_FULL`                               | no free slot                                             |
+| `NICKNAME_INVALID`                        | empty, too long, forbidden characters or filtered word   |
+| `NICKNAME_TAKEN`                          | already used in this room                                |
+| `UNKNOWN_TOKEN`                           | token does not match any seat                            |
+| `NOT_HOST`                                | host command from someone else                           |
+| `NOT_ALLOWED`                             | action not allowed in this phase or by the active layout |
+| `GAME_NOT_FOUND`                          | game not in the catalog                                  |
+| `NOT_ENOUGH_PLAYERS` / `TOO_MANY_PLAYERS` | manifest player limits not respected                     |
+| `RATE_LIMITED`                            | too many messages                                        |
+| `REPLACED`                                | a newer connection took this seat                        |
 
 `message` is written for humans (it can be displayed in a form), with a suggestion where useful. Codes are stable and used by the front end for translation.
 
@@ -372,19 +391,19 @@ Envelope (both directions):
 { ns: 'nexplay', v: 1, type: string, payload?: unknown }
 ```
 
-| Direction | `type` | Payload | Purpose |
-|---|---|---|---|
-| game → console | `ready` | `{ sdkVersion }` | game loaded |
-| game → console | `heartbeat` | `{}` every 1 s | watchdog: if none for 5 s, the console kills the game and sends `game:crashed` |
-| game → console | `setLayout` | `{ target, layout }` | becomes `pad:layout` |
-| game → console | `private` | `{ to, title?, text }` | becomes `private:send` |
-| game → console | `haptic` | `{ to, pattern \| preset }` | becomes `haptic:send` |
-| game → console | `end` | `{ scores: { playerId, score }[] }` | becomes `game:end` (server computes ranks) |
-| game → console | `log` | `{ level, message }` | shown in the developer log |
-| console → game | `init` | `{ players, a11y, config }` | start the game |
-| console → game | `players` | `{ players }` | new snapshot (join, leave, reconnect, a11y change) |
-| console → game | `input` | `InputEvent` | a validated player action |
-| console → game | `pause` / `resume` / `shutdown` | `{}` | game lifecycle |
+| Direction      | `type`                          | Payload                             | Purpose                                                                        |
+| -------------- | ------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------ |
+| game → console | `ready`                         | `{ sdkVersion }`                    | game loaded                                                                    |
+| game → console | `heartbeat`                     | `{}` every 1 s                      | watchdog: if none for 5 s, the console kills the game and sends `game:crashed` |
+| game → console | `setLayout`                     | `{ target, layout }`                | becomes `pad:layout`                                                           |
+| game → console | `private`                       | `{ to, title?, text }`              | becomes `private:send`                                                         |
+| game → console | `haptic`                        | `{ to, pattern \| preset }`         | becomes `haptic:send`                                                          |
+| game → console | `end`                           | `{ scores: { playerId, score }[] }` | becomes `game:end` (server computes ranks)                                     |
+| game → console | `log`                           | `{ level, message }`                | shown in the developer log                                                     |
+| console → game | `init`                          | `{ players, a11y, config }`         | start the game                                                                 |
+| console → game | `players`                       | `{ players }`                       | new snapshot (join, leave, reconnect, a11y change)                             |
+| console → game | `input`                         | `InputEvent`                        | a validated player action                                                      |
+| console → game | `pause` / `resume` / `shutdown` | `{}`                                | game lifecycle                                                                 |
 
 The game never sees tokens, sockets or the server URL. The SDK exposes only `players`, `onInput`, `setLayout`, `sendPrivate`, `vibrate`, `end`, pause/resume hooks and accessibility info.
 
@@ -392,16 +411,24 @@ The game never sees tokens, sockets or the server URL. The SDK exposes only `pla
 
 ```ts
 type Manifest = {
-  id: string;                          // slug, unique
+  id: string; // slug, unique
   name: string;
-  version: string;                     // semver
+  version: string; // semver
   description: string;
-  type: 'action' | 'party' | 'other';
-  players: { min: number; max: number };   // max at most 4 (8 as a stretch goal)
+  type: "action" | "party" | "other";
+  players: { min: number; max: number }; // max at most 4 (8 as a stretch goal)
   durationMinutes: number;
-  controller: { components: ('button' | 'dpad' | 'joystick' | 'text' | 'choice')[]; privateMessages: boolean; haptics: boolean };
-  accessibility: { largeText: boolean; reduceFlashing: boolean; noVibration: boolean };
-  entry: string;                       // e.g. "index.html"
+  controller: {
+    components: ("button" | "dpad" | "joystick" | "text" | "choice")[];
+    privateMessages: boolean;
+    haptics: boolean;
+  };
+  accessibility: {
+    largeText: boolean;
+    reduceFlashing: boolean;
+    noVibration: boolean;
+  };
+  entry: string; // e.g. "index.html"
   icon: { path: string; alt: string }; // alt text required
 };
 ```
