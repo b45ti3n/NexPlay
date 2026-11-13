@@ -27,7 +27,9 @@ jobs:
       - run: pnpm build
 
   commitlint:
+    if: github.repository == 'b45ti3n/NexPlay'
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v7
         with:
