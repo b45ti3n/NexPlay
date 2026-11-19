@@ -8,14 +8,14 @@ The project uses a simplified Git Flow strategy with two permanent branches and 
 
 ## 2. Branch Types
 
-| Branch | Purpose | Lifetime |
-|---|---|---|
-| `main` | Stable, production-ready code. | Permanent |
-| `develop` | Integration branch for work targeting the next release. | Permanent |
-| `feature/*` | New features and enhancements. | Temporary |
-| `fix/*` | Non-urgent bug fixes during development. | Temporary |
-| `release/*` | Release stabilization and preparation. | Temporary |
-| `hotfix/*` | Urgent fixes for production issues. | Temporary |
+| Branch      | Purpose                                                 | Lifetime  |
+| ----------- | ------------------------------------------------------- | --------- |
+| `main`      | Stable, production-ready code.                          | Permanent |
+| `develop`   | Integration branch for work targeting the next release. | Permanent |
+| `feature/*` | New features and enhancements.                          | Temporary |
+| `fix/*`     | Non-urgent bug fixes during development.                | Temporary |
+| `release/*` | Release stabilization and preparation.                  | Temporary |
+| `hotfix/*`  | Urgent fixes for production issues.                     | Temporary |
 
 ### 2.1 `main`
 
@@ -34,12 +34,12 @@ The project uses a simplified Git Flow strategy with two permanent branches and 
 
 ## 3. Branch Creation and Merge Targets
 
-| Branch type | Created from | PR target |
-|---|---|---|
-| `feature/*` | `develop` | `develop` |
-| `fix/*` | `develop` | `develop` |
-| `release/*` | `develop` | `main`, then synchronize with `develop` |
-| `hotfix/*` | `main` | `main`, then synchronize with `develop` |
+| Branch type | Created from | PR target                               |
+| ----------- | ------------ | --------------------------------------- |
+| `feature/*` | `develop`    | `develop`                               |
+| `fix/*`     | `develop`    | `develop`                               |
+| `release/*` | `develop`    | `main`, then synchronize with `develop` |
+| `hotfix/*`  | `main`       | `main`, then synchronize with `develop` |
 
 ## 4. Branch Naming Convention
 
@@ -300,14 +300,14 @@ Configure repository branch protection so that:
 
 ## 10. Recommended Branch Configuration
 
-| Component | Strategy |
-|---|---|
-| Branching model | Simplified Git Flow |
-| Permanent branches | `main`, `develop` |
-| Feature branches | `feature/*` |
-| Bug-fix branches | `fix/*` |
-| Emergency fixes | `hotfix/*` |
-| Release branches | `release/*` |
-| Feature/fix PR target | `develop` |
-| Release PR target | `main`, then synchronize with `develop` |
-| Hotfix PR targets | `main` and `develop` |
+| Component             | Strategy                                |
+| --------------------- | --------------------------------------- |
+| Branching model       | Simplified Git Flow                     |
+| Permanent branches    | `main`, `develop`                       |
+| Feature branches      | `feature/*`                             |
+| Bug-fix branches      | `fix/*`                                 |
+| Emergency fixes       | `hotfix/*`                              |
+| Release branches      | `release/*`                             |
+| Feature/fix PR target | `develop`                               |
+| Release PR target     | `main`, then synchronize with `develop` |
+| Hotfix PR targets     | `main` and `develop`                    |

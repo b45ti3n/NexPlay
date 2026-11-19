@@ -43,19 +43,19 @@ revert: revert user authentication changes
 
 ### 2.2 Allowed Commit Types
 
-| Type | Description | Example |
-|---|---|---|
-| `feat` | Introduces a new feature. | `feat: add user registration` |
-| `fix` | Fixes a bug. | `fix: resolve token expiration issue` |
-| `docs` | Documentation-only changes. | `docs: update README` |
-| `style` | Formatting changes that do not affect program logic. | `style: fix indentation` |
-| `refactor` | Code restructuring without changing behavior. | `refactor: simplify user service` |
-| `perf` | Improves performance. | `perf: optimize API response time` |
-| `test` | Adds or updates tests. | `test: add authentication tests` |
-| `build` | Changes the build system or external dependencies. | `build: update vite configuration` |
-| `ci` | Changes CI/CD configuration or scripts. | `ci: configure GitHub Actions` |
-| `chore` | Maintenance tasks that do not fit another type. | `chore: update dependencies` |
-| `revert` | Reverts a previous commit. | `revert: remove payment integration` |
+| Type       | Description                                          | Example                               |
+| ---------- | ---------------------------------------------------- | ------------------------------------- |
+| `feat`     | Introduces a new feature.                            | `feat: add user registration`         |
+| `fix`      | Fixes a bug.                                         | `fix: resolve token expiration issue` |
+| `docs`     | Documentation-only changes.                          | `docs: update README`                 |
+| `style`    | Formatting changes that do not affect program logic. | `style: fix indentation`              |
+| `refactor` | Code restructuring without changing behavior.        | `refactor: simplify user service`     |
+| `perf`     | Improves performance.                                | `perf: optimize API response time`    |
+| `test`     | Adds or updates tests.                               | `test: add authentication tests`      |
+| `build`    | Changes the build system or external dependencies.   | `build: update vite configuration`    |
+| `ci`       | Changes CI/CD configuration or scripts.              | `ci: configure GitHub Actions`        |
+| `chore`    | Maintenance tasks that do not fit another type.      | `chore: update dependencies`          |
+| `revert`   | Reverts a previous commit.                           | `revert: remove payment integration`  |
 
 ### 2.3 Scopes
 
@@ -293,21 +293,21 @@ Project versions follow Semantic Versioning:
 MAJOR.MINOR.PATCH
 ```
 
-| Version component | Meaning | Example |
-|---|---|---|
-| MAJOR | Incompatible or breaking changes. | `2.0.0` |
-| MINOR | New backward-compatible functionality. | `1.3.0` |
-| PATCH | Backward-compatible bug fixes. | `1.2.1` |
+| Version component | Meaning                                | Example |
+| ----------------- | -------------------------------------- | ------- |
+| MAJOR             | Incompatible or breaking changes.      | `2.0.0` |
+| MINOR             | New backward-compatible functionality. | `1.3.0` |
+| PATCH             | Backward-compatible bug fixes.         | `1.2.1` |
 
 Typical Conventional Commit release impact:
 
-| Commit | Typical version impact |
-|---|---|
-| `feat:` | MINOR |
-| `fix:` | PATCH |
-| `perf:` | Usually PATCH |
-| `BREAKING CHANGE:` or `!` | MAJOR |
-| `docs:`, `style:`, `test:`, `chore:` | No release by default |
+| Commit                               | Typical version impact |
+| ------------------------------------ | ---------------------- |
+| `feat:`                              | MINOR                  |
+| `fix:`                               | PATCH                  |
+| `perf:`                              | Usually PATCH          |
+| `BREAKING CHANGE:` or `!`            | MAJOR                  |
+| `docs:`, `style:`, `test:`, `chore:` | No release by default  |
 
 The actual version increment depends on the project's release policy and the changes included in the release.
 
@@ -323,27 +323,27 @@ The following tools can help enforce the workflow:
 
 ## 8. Team Rules and Best Practices
 
-| Rule | Requirement |
-|---|---|
-| Commit messages | Follow Conventional Commits. |
-| PR titles | Follow Conventional Commits. |
-| PR descriptions | Explain purpose, changes, and testing. |
-| Code review | At least one approval. |
-| CI checks | All required checks must pass. |
-| Merge strategy | Squash and merge for feature and fix PRs. |
-| Branch cleanup | Delete temporary branches after merging. |
-| Versioning | Follow Semantic Versioning. |
+| Rule            | Requirement                               |
+| --------------- | ----------------------------------------- |
+| Commit messages | Follow Conventional Commits.              |
+| PR titles       | Follow Conventional Commits.              |
+| PR descriptions | Explain purpose, changes, and testing.    |
+| Code review     | At least one approval.                    |
+| CI checks       | All required checks must pass.            |
+| Merge strategy  | Squash and merge for feature and fix PRs. |
+| Branch cleanup  | Delete temporary branches after merging.  |
+| Versioning      | Follow Semantic Versioning.               |
 
 ## 9. Recommended Configuration
 
-| Component | Strategy |
-|---|---|
-| Commit convention | Conventional Commits 1.0.0 |
-| Commit scopes | Optional, recommended |
-| PR naming | Conventional Commits |
-| PR review | At least one approval |
-| Merge strategy | Squash and merge for features and fixes |
-| Versioning | Semantic Versioning |
-| Automation | Commitlint, Husky, and CI |
+| Component         | Strategy                                |
+| ----------------- | --------------------------------------- |
+| Commit convention | Conventional Commits 1.0.0              |
+| Commit scopes     | Optional, recommended                   |
+| PR naming         | Conventional Commits                    |
+| PR review         | At least one approval                   |
+| Merge strategy    | Squash and merge for features and fixes |
+| Versioning        | Semantic Versioning                     |
+| Automation        | Commitlint, Husky, and CI               |
 
 **Important:** Commit messages describe individual changes, while PR titles summarize the complete contribution. Both follow Conventional Commits, but they do not need to be identical.
