@@ -1,44 +1,42 @@
-name: Mirror Repository
+name: Mirror Sync
 
 on:
-  workflow_call:
-    secrets:
-      MIRROR_SSH_KEY:
-        required: true
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main, dev]
+
+concurrency:
+  group: mirror-sync-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
 
 jobs:
-  mirror:
-    if: github.repository == 'b45ti3n/NexPlay'
+  push-to-mirror:
+    name: Sync ${{ github.event.workflow_run.head_branch }} to Mirror
+    if:
+      ${{ github.event.workflow_run.conclusion == 'success' }} &&
+      github.repository == 'b45ti3n/NexPlay'
     runs-on: ubuntu-latest
-
+    timeout-minutes: 5
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
+      - name: Checkout verified commit
+        uses: actions/checkout@v6
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
-          ref: ${{ github.event.deleted && format('refs/heads/{0}', github.event.repository.default_branch) || github.ref }}
 
-      - name: Configure SSH
+      - name: Load SSH key for mirror
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.MIRROR_SSH_KEY }}
+
+      - name: Push branch to mirror repository
         env:
-          MIRROR_SSH_KEY: ${{ secrets.MIRROR_SSH_KEY }}
+          MIRROR_URL: ${{ secrets.MIRROR_REPO_URL }}
+          TARGET_BRANCH: ${{ github.event.workflow_run.head_branch }}
         run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-
-          printf '%s\n' "$MIRROR_SSH_KEY" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
-
-      - name: Push to organization repository
-        run: |
-          git remote add mirror git@github.com:EpitechPGE3-2026/G-PRO-500-PAR-5-1-professionalwork-48
-
-          git fetch origin '+refs/heads/*:refs/remotes/origin/*' --prune
-
-          git push --force --prune mirror \
-            '+refs/remotes/origin/*:refs/heads/*' \
-            '+refs/tags/*:refs/tags/*'
+          git remote add mirror "$MIRROR_URL"
+          git push mirror "HEAD:refs/heads/${TARGET_BRANCH}"
