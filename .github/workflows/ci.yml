@@ -17,8 +17,7 @@ jobs:
   # 1A. Fast Gate: Commitlint (Validates PR Title on Pull Requests)
   commitlint:
     name: Commitlint
-    if:
-      github.event_name == 'pull_request' &&
+    if: github.event_name == 'pull_request' &&
       github.repository == 'b45ti3n/NexPlay'
     runs-on: ubuntu-latest
     timeout-minutes: 5
