@@ -41,6 +41,7 @@ jobs:
       - uses: ./.github/actions/setup
       - name: Run Linter
       - run: pnpm lint
+      - name: Run Typecheck
       - run: pnpm typecheck
 
   # 2. Verification: Test Suite (Gated by Linter & Commitlint)
