@@ -16,8 +16,8 @@ permissions:
 jobs:
   push-to-mirror:
     name: Sync ${{ github.event.workflow_run.head_branch }} to Mirror
-    if: ${{ github.event.workflow_run.conclusion == 'success' }} &&
-      github.repository == 'b45ti3n/NexPlay'
+    if: ${{ github.event.workflow_run.conclusion == 'success' &&
+      github.repository == 'b45ti3n/NexPlay' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
 
       - name: Load SSH key for mirror
-        uses: webfactory/ssh-agent@v0.9.1
+        uses: webfactory/ssh-agent@v0.10.0
         with:
           ssh-private-key: ${{ secrets.MIRROR_SSH_KEY }}
 
