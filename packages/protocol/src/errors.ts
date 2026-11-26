@@ -30,10 +30,3 @@ export type ProtocolError = z.infer<typeof ProtocolErrorSchema>;
 export type Ack<T> =
   | { ok: true; data: T }
   | { ok: false; error: ProtocolError };
-
-// export function createAckSchema<T extends z.ZodType>(dataSchema: T) {
-//   return z.discriminatedUnion("ok", [
-//     z.object({ ok: z.literal(true), data: dataSchema }),
-//     z.object({ ok: z.literal(false), error: ProtocolErrorSchema }),
-//   ]);
-// }
