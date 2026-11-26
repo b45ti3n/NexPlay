@@ -1,13 +1,10 @@
-import { z } from "zod";
-
-export const PROTOCOL_VERSION = 1;
-
-export const Envelope = z.object({
-  v: z.literal(PROTOCOL_VERSION),
-  t: z.string().min(1).max(64),
-  ts: z.number(),
-  seq: z.number().int().nonnegative().optional(),
-  p: z.unknown(),
-});
-
-export type Envelope = z.infer<typeof Envelope>;
+export * from "./constants.js";
+export * from "./errors.js";
+export * from "./models/identifiers.js";
+export * from "./models/room.js";
+export * from "./models/layout.js";
+export * from "./models/input.js";
+export * from "./events/handshake.js";
+export * from "./events/clientToServer.js";
+export * from "./events/serverToClient.js";
+export * from "./events/socketMaps.js";
