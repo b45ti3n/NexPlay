@@ -124,15 +124,15 @@ WIP
 
 ## 3. Pull Request Workflow
 
-All changes targeting `main` must go through a Pull Request. Changes targeting `develop` should also use Pull Requests so they can be reviewed and validated.
+All changes targeting `main` must go through a Pull Request. Changes targeting `dev` should also use Pull Requests so they can be reviewed and validated.
 
 ### 3.1 Standard Development Process
 
 #### Step 1 — Update the base branch
 
 ```bash
-git checkout develop
-git pull origin develop
+git checkout dev
+git pull origin dev
 ```
 
 #### Step 2 — Create a working branch
@@ -161,7 +161,7 @@ git push -u origin feature/user-authentication
 
 For a feature or fix, open a PR with:
 
-- **Base:** `develop`
+- **Base:** `dev`
 - **Compare:** your working branch
 
 The PR must include:
@@ -199,7 +199,7 @@ Required CI checks should include, as applicable:
 
 #### Step 8 — Merge the PR
 
-Once the required approvals and CI checks are complete, merge the PR into `develop`.
+Once the required approvals and CI checks are complete, merge the PR into `dev`.
 
 Recommended merge strategy: **Squash and merge** for feature and fix branches. This keeps the target branch history concise.
 

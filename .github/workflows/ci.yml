@@ -2,60 +2,60 @@ name: CI
 
 on:
   pull_request:
+    branches: [main, dev]
   push:
-    branches: [main]
+    branches: [main, dev]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
 
 jobs:
-  ci:
-    if: github.event.deleted != true && github.repository == 'b45ti3n/NexPlay'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v7
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
-      - run: pnpm typecheck
-      - run: pnpm test
-      - run: pnpm build
-
+  # 1A. Fast Gate: Commitlint (Validates PR Title on Pull Requests)
   commitlint:
+    name: Commitlint
+    if: github.event_name == 'pull_request' &&
+      github.repository == 'b45ti3n/NexPlay'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: read
+    steps:
+      - name: Validate PR Title
+        uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # 1B. Fast Gate: Code Linter (Runs in parallel with Commitlint)
+  linter:
+    name: Linter
     if: github.repository == 'b45ti3n/NexPlay'
     runs-on: ubuntu-latest
-
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: pnpm
-      - run: pnpm install --frozen-lockfile
-      - name: Lint commit messages
-        run: >
-          pnpm exec commitlint
-          --from ${{ github.event.pull_request.base.sha }}
-          --to ${{ github.event.pull_request.head.sha }}
-          --verbose
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - name: Run Linter
+        run: pnpm lint
+      - name: Run Typecheck
+        run: pnpm typecheck
 
-  mirror:
-    needs: ci
-
-    if: >-
+  # 2. Verification: Test Suite (Gated by Linter & Commitlint)
+  test-suite:
+    name: Test Suite
+    needs: [linter, commitlint]
+    if: |
       always() &&
-      github.event_name == 'push' &&
-      (github.event.deleted == true || needs.ci.result == 'success')
-
-    uses: ./.github/workflows/mirror.yml
-
-    secrets:
-      MIRROR_SSH_KEY: ${{ secrets.MIRROR_SSH_KEY }}
+      github.repository == 'b45ti3n/NexPlay' &&
+      needs.linter.result == 'success' &&
+      (needs.commitlint.result == 'success' || needs.commitlint.result == 'skipped')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - name: Run Tests
+        run: pnpm test

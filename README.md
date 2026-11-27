@@ -18,24 +18,23 @@
 
 Nexplay is a web game console that runs directly in your browser, without install. The screen shows the game, and players can join using their smartphones as controllers by scanning a QR code or entering the room code.
 
-
 ## Functionalities
 
-*todo*
+_todo_
 
 ## Screenshots
 
-*todo*
+_todo_
 
 ## Quickstart
 
 ### Prerequistes
 
-| Tool | Version | Link |
-|-------|---------|------|
-| Git | latest | [git-scm.com](https://git-scm.com/) |
-| Node.js | LTS | [nodejs.org](https://nodejs.org/) |
-| pnpm | latest | [pnpm.io](https://pnpm.io/) |
+| Tool    | Version | Link                                |
+| ------- | ------- | ----------------------------------- |
+| Git     | latest  | [git-scm.com](https://git-scm.com/) |
+| Node.js | LTS     | [nodejs.org](https://nodejs.org/)   |
+| pnpm    | latest  | [pnpm.io](https://pnpm.io/)         |
 
 ### Installing
 
@@ -67,14 +66,13 @@ Then :
 pnpm test
 ```
 
-
 ## Pipeline CI/CD
 
-*todo*
+_todo_
 
 ## Documentation
 
-*todo*
+_todo_
 
 ## Contributing
 
