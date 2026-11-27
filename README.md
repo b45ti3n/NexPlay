@@ -34,7 +34,15 @@ _todo_
 | ------- | ------- | ----------------------------------- |
 | Git     | latest  | [git-scm.com](https://git-scm.com/) |
 | Node.js | LTS     | [nodejs.org](https://nodejs.org/)   |
-| pnpm    | latest  | [pnpm.io](https://pnpm.io/)         |
+| pnpm    | 12.18.0 | [pnpm.io](https://pnpm.io/)         |
+
+If pnpm is not installed, install the version used by this project from outside
+the repository:
+
+```bash
+cd ~
+npm install --global pnpm@12.18.0
+```
 
 ### Installing
 
@@ -53,11 +61,9 @@ pnpm install
 pnpm dev
 ```
 
-Then :
-
-1. Open the console in your browser : `http://localhost:<port>`
-2. Scan the QR code with a smartphone connected to the **same network**
-3. Play
+This starts the frontend in Vite's development mode. Open
+[`http://localhost:5173`](http://localhost:5173); if that port is already in
+use, Vite will print the available URL in the terminal.
 
 ## Tests
 
